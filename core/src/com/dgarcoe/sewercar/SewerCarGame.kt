@@ -29,11 +29,14 @@ class SewerCarGame : Game() {
 
     lateinit var skin: Skin
 
+    private var world: World = null
 
     override fun create() {
         skin = Skin(Gdx.files.internal("skin/metal/skin/metal-ui.json"))
         mainMenuScreen = MainMenuScreen(this,skin)
         playingScreen = PlayingScreen(this)
+
+        world = World()
 
         currentState = mainMenuState
         currentScreen = mainMenuScreen
