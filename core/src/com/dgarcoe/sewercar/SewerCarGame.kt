@@ -29,7 +29,7 @@ class SewerCarGame : Game() {
 
     lateinit var skin: Skin
 
-    private var world: World = null
+    lateinit var world: World
 
     override fun create() {
         skin = Skin(Gdx.files.internal("skin/metal/skin/metal-ui.json"))
