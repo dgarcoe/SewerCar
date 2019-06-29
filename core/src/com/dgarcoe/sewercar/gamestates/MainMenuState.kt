@@ -8,6 +8,8 @@ import com.dgarcoe.sewercar.SewerCarGame
 class MainMenuState(game: SewerCarGame) : SewerCarGameState(game)  {
 
     override fun startGame(): Int {
-        return super.startGame()
+        game.currentState = game.playingState
+        game.startNewScreen(game.playingScreen)
+        return 0
     }
 }
