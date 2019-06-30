@@ -14,14 +14,14 @@ import com.badlogic.gdx.Gdx
  */
 class World {
 
-    private var sewers = mutableListOf<Sewer>()
-    private var player: PlayerCar? = null
+    var sewers = mutableListOf<Sewer>()
+    var player: PlayerCar? = null
 
-    private val camOffsetUp: Float = 0.toFloat()
-    private val camOffsetDown: Float = 0.toFloat()
+    var camOffsetUp: Float = 0.toFloat()
+    var camOffsetDown: Float = 0.toFloat()
 
-    private val viewportWidth: Int = 0
-    private val viewportHeight: Int = 0
+    var viewportWidth: Int = 0
+    var viewportHeight: Int = 0
 
     init {
         player = PlayerCar(Vector2(0f, 0f))

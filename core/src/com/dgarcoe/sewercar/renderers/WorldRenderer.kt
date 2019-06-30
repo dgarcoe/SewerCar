@@ -21,7 +21,7 @@ class WorldRenderer(world: World) {
     private val WIDTH_CAMERA = 1500
     private val HEIGHT_CAMERA = 2048
     private var cam: OrthographicCamera? = null
-    private val camSpeed: Float = 0.toFloat()
+    private val camSpeed: Float = 0f
 
     private var batch: SpriteBatch? = null
     private var background: Texture? = null
@@ -30,14 +30,17 @@ class WorldRenderer(world: World) {
       cam = OrthographicCamera(WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
         cam!!.setToOrtho(false, WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
         cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
-        //world.setCamOffset(0, WIDTH_CAMERA);
-        //world.setViewportSize(WIDTH_CAMERA, HEIGHT_CAMERA);
+        world.camOffsetUp = HEIGHT_CAMERA.toFloat()
+        world.camOffsetDown = 0f
+        world.viewportHeight = HEIGHT_CAMERA
+        world.viewportWidth = WIDTH_CAMERA
+
         cam!!.update()
 
         batch = SpriteBatch()
 
         background = Texture(Gdx.files.internal("bg/road.png"));
-
+        background!!.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
     }
 
     fun render() {
@@ -45,12 +48,16 @@ class WorldRenderer(world: World) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        cam!!.position.set(cam!!.position.x, cam!!.position.y+10, 0f);
+        cam!!.update();
+
         batch!!.begin();
         batch!!.enableBlending();
         val originX : Float = 0F
-        val originY : Float = 0F
-        val length : Float = 1500F
-        val height : Float = 2048F
+        var originY : Float = 0F
+        val length : Float = 750F
+        val height : Float = 1024F
+        originY+=10
         batch!!.draw(background,originX,originY,length,height);
         batch!!.end()
 
