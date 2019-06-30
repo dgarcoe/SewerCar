@@ -6,6 +6,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.dgarcoe.sewercar.World
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable
+
+
+
+
 
 
 
@@ -17,14 +23,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
  */
 class WorldRenderer(world: World) {
 
-    private val DEFAULT_CAMERA_SPEED = 0.5f
+    private val DEFAULT_CAMERA_SPEED = 3f
     private val WIDTH_CAMERA = 1500
     private val HEIGHT_CAMERA = 2048
     private var cam: OrthographicCamera? = null
     private val camSpeed: Float = 0f
 
     private var batch: SpriteBatch? = null
-    private var background: Texture? = null
+    private var texture: Texture? = null
+    private var background: TextureRegion? = null
+    private var originY : Float = 0f
+    private val width: Int = 1500
+    private val height : Int = 2048
 
     init {
       cam = OrthographicCamera(WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
@@ -39,8 +49,9 @@ class WorldRenderer(world: World) {
 
         batch = SpriteBatch()
 
-        background = Texture(Gdx.files.internal("bg/road.png"));
-        background!!.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
+        texture = Texture(Gdx.files.internal("bg/road.png"));
+        texture!!.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
+
     }
 
     fun render() {
@@ -48,19 +59,17 @@ class WorldRenderer(world: World) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        cam!!.position.set(cam!!.position.x, cam!!.position.y+10, 0f);
+        cam!!.position.set(cam!!.position.x, cam!!.position.y, 0f);
         cam!!.update();
 
+        batch!!.setProjectionMatrix(cam!!.combined);
         batch!!.begin();
         batch!!.enableBlending();
-        val originX : Float = 0F
-        var originY : Float = 0F
-        val length : Float = 750F
-        val height : Float = 1024F
-        originY+=10
-        batch!!.draw(background,originX,originY,length,height);
+
+        batch!!.draw(texture,0f,0f,0,originY.toInt(), width, height);
         batch!!.end()
 
+        originY-=DEFAULT_CAMERA_SPEED
     }
 
 }
