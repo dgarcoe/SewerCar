@@ -1,13 +1,19 @@
 package com.dgarcoe.sewercar.renderers
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dgarcoe.sewercar.entities.GameObject
 
 /**
  * Created by Daniel on 30/06/2019.
  */
-class PlayerRenderer : IEntityRenderer {
+class PlayerRenderer(val batch: SpriteBatch) : IEntityRenderer {
+
+    private var texture: Texture? = null
+
     override fun loadEntityTextures() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        texture = Texture(Gdx.files.internal("cars/car-truck1.png"));
     }
 
     override fun createEntityAnimations() {
@@ -15,7 +21,7 @@ class PlayerRenderer : IEntityRenderer {
     }
 
     override fun drawEntity(gameObject: GameObject) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        batch.draw(texture,750f,40f)
     }
 
     override fun dispose() {

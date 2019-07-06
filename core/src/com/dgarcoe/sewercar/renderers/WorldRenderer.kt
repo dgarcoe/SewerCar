@@ -21,20 +21,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable
 /**
  * Created by Daniel on 30/06/2019.
  */
-class WorldRenderer(world: World) {
+class WorldRenderer(var world: World) {
 
-    private val DEFAULT_CAMERA_SPEED = 3f
-    private val WIDTH_CAMERA = 1500
-    private val HEIGHT_CAMERA = 2048
+    private val DEFAULT_CAMERA_SPEED = 1.5f
+    private val WIDTH_CAMERA = 128
+    private val HEIGHT_CAMERA = 256
     private var cam: OrthographicCamera? = null
-    private val camSpeed: Float = 0f
 
     private var batch: SpriteBatch? = null
     private var texture: Texture? = null
-    private var background: TextureRegion? = null
     private var originY : Float = 0f
-    private val width: Int = 1500
-    private val height : Int = 2048
+    private val width: Int = 128
+    private val height : Int = 256
+
+    private var playerRenderer: PlayerRenderer? = null
 
     init {
       cam = OrthographicCamera(WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
@@ -51,6 +51,8 @@ class WorldRenderer(world: World) {
 
         texture = Texture(Gdx.files.internal("bg/road.png"));
         texture!!.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
+        playerRenderer = PlayerRenderer(batch!!)
+        playerRenderer!!.loadEntityTextures()
 
     }
 
@@ -67,6 +69,7 @@ class WorldRenderer(world: World) {
         batch!!.enableBlending();
 
         batch!!.draw(texture,0f,0f,0,originY.toInt(), width, height);
+        playerRenderer!!.drawEntity(world.player!!)
         batch!!.end()
 
         originY-=DEFAULT_CAMERA_SPEED

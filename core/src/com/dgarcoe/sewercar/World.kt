@@ -5,8 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import com.dgarcoe.sewercar.entities.PlayerCar
 import java.nio.file.Files.size
 import com.badlogic.gdx.Gdx
-
-
+import com.badlogic.gdx.math.Rectangle
 
 
 /**
@@ -24,7 +23,7 @@ class World {
     var viewportHeight: Int = 0
 
     init {
-        player = PlayerCar(Vector2(0f, 0f))
+        player = PlayerCar(Vector2(0f, 0f), Rectangle(0f,0f,0f,0f),Vector2(0f,0f))
     }
 
     fun cleanAll() {
