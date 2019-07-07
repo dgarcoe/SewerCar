@@ -6,6 +6,9 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.dgarcoe.sewercar.SewerCarGame
 import com.dgarcoe.sewercar.renderers.WorldRenderer
+import com.badlogic.gdx.math.Vector3
+
+
 
 /**
  * Created by Daniel on 23/06/2019.
@@ -20,6 +23,8 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
 
     override fun show() {
         worldRenderer = WorldRenderer(game.world)
+        Gdx.input.setInputProcessor(this);
+
     }
 
     override fun render(delta: Float) {
@@ -46,7 +51,7 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
@@ -62,19 +67,24 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
     }
 
     override fun keyUp(keycode: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var movement = Vector3(screenX.toFloat(), screenY.toFloat(), 0f)
+        movement = worldRenderer.cam!!.unproject(movement)
+        game.world.player!!.position.x = movement.x
+        game.world.player!!.position.y = movement.y
+        Gdx.app.log("LOL",movement.x.toString()+":"+movement.y)
+        return true
     }
 
     override fun keyDown(keycode: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
 }
