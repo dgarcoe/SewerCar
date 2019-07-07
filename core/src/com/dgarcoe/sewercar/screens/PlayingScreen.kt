@@ -55,7 +55,7 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
     }
 
     override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     override fun keyTyped(character: Char): Boolean {
@@ -75,7 +75,6 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
         movement = worldRenderer.cam!!.unproject(movement)
         game.world.player!!.position.x = movement.x
         game.world.player!!.position.y = movement.y
-        Gdx.app.log("LOL",movement.x.toString()+":"+movement.y)
         return true
     }
 
