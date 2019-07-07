@@ -1,6 +1,7 @@
 package com.dgarcoe.sewercar.renderers
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.dgarcoe.sewercar.World
@@ -8,6 +9,9 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+
+
 
 
 
@@ -35,6 +39,9 @@ class WorldRenderer(var world: World) {
     private val height : Int = 256
 
     private var playerRenderer: PlayerRenderer? = null
+
+    /** for debug rendering  */
+    var debugRenderer = ShapeRenderer()
 
     init {
       cam = OrthographicCamera(WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
@@ -72,7 +79,14 @@ class WorldRenderer(var world: World) {
         playerRenderer!!.drawEntity(world.player!!)
         batch!!.end()
 
+        //Debug renderer to check bounds
+        /*debugRenderer.setProjectionMatrix(cam!!.combined);
+        debugRenderer.begin(ShapeRenderer.ShapeType.Line);
+        debugRenderer.setColor(Color(1f, 1f, 0f, 1f));
+        debugRenderer.rect(world.player!!.position.x, world.player!!.position.y, 24f, 48f);
+        debugRenderer.end()*/
+
         originY-=DEFAULT_CAMERA_SPEED
-    }
+}
 
 }
