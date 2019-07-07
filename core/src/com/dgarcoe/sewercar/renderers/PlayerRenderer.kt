@@ -13,7 +13,7 @@ class PlayerRenderer(val batch: SpriteBatch) : IEntityRenderer {
     private var texture: Texture? = null
 
     override fun loadEntityTextures() {
-        texture = Texture(Gdx.files.internal("cars/car-truck1.png"));
+        texture = Texture(Gdx.files.internal("cars/playercar.png"));
     }
 
     override fun createEntityAnimations() {
@@ -21,7 +21,7 @@ class PlayerRenderer(val batch: SpriteBatch) : IEntityRenderer {
     }
 
     override fun drawEntity(gameObject: GameObject) {
-        batch.draw(texture,750f,40f)
+        batch.draw(texture,85f,10f)
     }
 
     override fun dispose() {

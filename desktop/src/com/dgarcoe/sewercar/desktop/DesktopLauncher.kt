@@ -9,8 +9,8 @@ object DesktopLauncher {
     fun main(arg: Array<String>) {
         val config = LwjglApplicationConfiguration()
         config.title = "Sewer Car"
-        config.width = 750
-        config.height = 1024
+        config.width = 640
+        config.height = 1280
         LwjglApplication(SewerCarGame(), config)
     }
 }

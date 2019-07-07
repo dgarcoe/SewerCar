@@ -25,7 +25,7 @@ class WorldRenderer(var world: World) {
 
     private val DEFAULT_CAMERA_SPEED = 1f
     private val WIDTH_CAMERA = 128
-    private val HEIGHT_CAMERA = 128
+    private val HEIGHT_CAMERA = 256
     private var cam: OrthographicCamera? = null
 
     private var batch: SpriteBatch? = null
