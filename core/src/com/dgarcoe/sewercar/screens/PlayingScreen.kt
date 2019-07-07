@@ -74,7 +74,7 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
         var movement = Vector3(screenX.toFloat(), screenY.toFloat(), 0f)
         movement = worldRenderer.cam!!.unproject(movement)
         game.world.player!!.position.x = movement.x
-        game.world.player!!.position.y = movement.y
+
         return true
     }
 
