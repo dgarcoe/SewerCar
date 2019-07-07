@@ -21,7 +21,7 @@ class PlayerRenderer(val batch: SpriteBatch) : IEntityRenderer {
     }
 
     override fun drawEntity(gameObject: GameObject) {
-        batch.draw(texture,85f,10f)
+        batch.draw(texture,gameObject.position.x,gameObject.position.y)
     }
 
     override fun dispose() {
