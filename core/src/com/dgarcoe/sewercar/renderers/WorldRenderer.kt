@@ -83,7 +83,7 @@ class WorldRenderer(var world: World) {
         /*debugRenderer.setProjectionMatrix(cam!!.combined);
         debugRenderer.begin(ShapeRenderer.ShapeType.Line);
         debugRenderer.setColor(Color(1f, 1f, 0f, 1f));
-        debugRenderer.rect(world.player!!.position.x, world.player!!.position.y, 24f, 48f);
+        debugRenderer.rect(world.player!!.bounds.x, world.player!!.bounds.y, world.player!!.bounds.width, world.player!!.bounds.height);
         debugRenderer.end()*/
 
         originY-=DEFAULT_CAMERA_SPEED

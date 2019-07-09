@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.math.Rectangle
 import com.dgarcoe.sewercar.SewerCarGame
 import com.dgarcoe.sewercar.renderers.WorldRenderer
 import com.badlogic.gdx.math.Vector3
@@ -73,7 +74,13 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
         var movement = Vector3(screenX.toFloat(), screenY.toFloat(), 0f)
         movement = worldRenderer.cam!!.unproject(movement)
-        game.world.player!!.update(movement,movement)
+
+        val touchArea = Rectangle((game.world.player!!.bounds.x-20.0).toFloat(),game.world.player!!.bounds.y-5,
+                game.world.player!!.bounds.width+20,game.world.player!!.bounds.height+10)
+
+        if (touchArea.contains(movement.x,movement.y)) {
+            game.world.player!!.update(movement, movement)
+        }
 
         return true
     }
