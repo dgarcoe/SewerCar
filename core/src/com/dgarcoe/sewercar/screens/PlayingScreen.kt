@@ -78,6 +78,13 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
         val touchArea = Rectangle((game.world.player!!.bounds.x-20.0).toFloat(),game.world.player!!.bounds.y-5,
                 game.world.player!!.bounds.width+20,game.world.player!!.bounds.height+10)
 
+        //Set limits
+        if (movement.x<4) {
+            movement.x = 4f
+        } else if (movement.x>100) {
+            movement.x = 100f
+        }
+
         if (touchArea.contains(movement.x,movement.y)) {
             game.world.player!!.update(movement, movement)
         }
