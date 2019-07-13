@@ -6,14 +6,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dgarcoe.sewercar.entities.GameObject
 
 /**
- * Created by Daniel on 30/06/2019.
+ * Created by Daniel on 13/07/2019.
  */
-class PlayerRenderer(val batch: SpriteBatch) : IEntityRenderer {
+class SewerRenderer(val batch: SpriteBatch) : IEntityRenderer {
 
     private var texture: Texture? = null
 
+
     override fun loadEntityTextures() {
-        texture = Texture(Gdx.files.internal("cars/playercar.png"));
+        texture = Texture(Gdx.files.internal("sewers/basic_sewer.png"));
     }
 
     override fun createEntityAnimations() {
