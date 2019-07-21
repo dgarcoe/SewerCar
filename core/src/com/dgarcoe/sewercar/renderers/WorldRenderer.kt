@@ -58,28 +58,30 @@ class WorldRenderer(var world: World) {
 
     fun render() {
 
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        cam!!.position.set(cam!!.position.x, cam!!.position.y, 0f);
-        cam!!.update();
+        cam!!.position.set(cam!!.position.x, cam!!.position.y, 0f)
+        cam!!.update()
 
-        batch!!.setProjectionMatrix(cam!!.combined);
-        batch!!.begin();
-        batch!!.enableBlending();
+        batch!!.setProjectionMatrix(cam!!.combined)
+        batch!!.begin()
+        batch!!.enableBlending()
 
-        batch!!.draw(texture,0f,0f,0,originY.toInt(), width, height);
-        for (sewer: Sewer in world.sewers) {
+        batch!!.draw(texture,0f,0f,0,originY.toInt(), width, height)
+        val sewerIterator = world.sewers.iterator()
+        for (sewer in sewerIterator) {
+            sewer.update()
 
             if (sewer.alive) {
                 sewerRenderer!!.drawEntity(sewer)
                 sewer.position.y -= DEFAULT_CAMERA_SPEED
                 sewer.bounds.y -= DEFAULT_CAMERA_SPEED
             } else {
-                Gdx.app.log("LOL","REMOVED")
-                world.sewers.remove(sewer)
+                sewerIterator.remove()
             }
         }
+
         playerRenderer!!.drawEntity(world.player!!)
         batch!!.end()
 
