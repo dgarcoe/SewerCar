@@ -10,17 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-
-
-
-
-
-
-
-
-
-
-
+import com.dgarcoe.sewercar.entities.Sewer
 
 /**
  * Created by Daniel on 30/06/2019.
@@ -39,6 +29,7 @@ class WorldRenderer(var world: World) {
     private val height : Int = 256
 
     private var playerRenderer: PlayerRenderer? = null
+    private var sewerRenderer: SewerRenderer? = null
 
     /** for debug rendering  */
     var debugRenderer = ShapeRenderer()
@@ -60,6 +51,8 @@ class WorldRenderer(var world: World) {
         texture!!.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
         playerRenderer = PlayerRenderer(batch!!)
         playerRenderer!!.loadEntityTextures()
+        sewerRenderer = SewerRenderer(batch!!)
+        sewerRenderer!!.loadEntityTextures()
 
     }
 
@@ -76,6 +69,10 @@ class WorldRenderer(var world: World) {
         batch!!.enableBlending();
 
         batch!!.draw(texture,0f,0f,0,originY.toInt(), width, height);
+        for (sewer: Sewer in world.sewers) {
+            sewerRenderer!!.drawEntity(sewer)
+            sewer.position.y -= DEFAULT_CAMERA_SPEED
+        }
         playerRenderer!!.drawEntity(world.player!!)
         batch!!.end()
 

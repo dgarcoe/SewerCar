@@ -3,9 +3,9 @@ package com.dgarcoe.sewercar
 import com.dgarcoe.sewercar.entities.Sewer
 import com.badlogic.gdx.math.Vector2
 import com.dgarcoe.sewercar.entities.PlayerCar
-import java.nio.file.Files.size
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Rectangle
+import java.util.*
 
 
 /**
@@ -33,6 +33,17 @@ class World {
             sewers.clear()
         }
         Gdx.app.log("WORLD", "Sewers list size: " + sewers.size)
+
+    }
+
+    fun generateSewer() {
+        val random = Random()
+
+        val positionX = random.nextInt(84-8)+8
+
+        Gdx.app.log("LOL",positionX.toString())
+
+        sewers.add(Sewer(Vector2(positionX.toFloat(),300f), Rectangle(positionX.toFloat(),300f,22f,22f), Vector2(22f,22f)))
 
     }
 

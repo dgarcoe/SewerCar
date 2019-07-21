@@ -8,6 +8,9 @@ import com.badlogic.gdx.math.Rectangle
 import com.dgarcoe.sewercar.SewerCarGame
 import com.dgarcoe.sewercar.renderers.WorldRenderer
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.utils.Timer
+import com.badlogic.gdx.utils.Timer.Task
+
 
 
 
@@ -17,6 +20,10 @@ import com.badlogic.gdx.math.Vector3
 class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
 
     lateinit var worldRenderer : WorldRenderer
+
+    var elapsed: Float = 0.0f
+
+    val SEWER_GENERATION_TIME = 2f
 
     override fun hide() {
 
@@ -29,10 +36,17 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
     }
 
     override fun render(delta: Float) {
+        elapsed += delta
+
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         worldRenderer.render()
+
+        if (elapsed > SEWER_GENERATION_TIME) {
+            game.world.generateSewer()
+            elapsed = 0f
+        }
     }
 
     override fun pause() {
