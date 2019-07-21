@@ -70,18 +70,26 @@ class WorldRenderer(var world: World) {
 
         batch!!.draw(texture,0f,0f,0,originY.toInt(), width, height);
         for (sewer: Sewer in world.sewers) {
-            sewerRenderer!!.drawEntity(sewer)
-            sewer.position.y -= DEFAULT_CAMERA_SPEED
+
+            if (sewer.alive) {
+                sewerRenderer!!.drawEntity(sewer)
+                sewer.position.y -= DEFAULT_CAMERA_SPEED
+            } else {
+                world.sewers.remove(sewer)
+            }
         }
         playerRenderer!!.drawEntity(world.player!!)
         batch!!.end()
 
         //Debug renderer to check bounds
-        /*debugRenderer.setProjectionMatrix(cam!!.combined);
+        debugRenderer.setProjectionMatrix(cam!!.combined);
         debugRenderer.begin(ShapeRenderer.ShapeType.Line);
         debugRenderer.setColor(Color(1f, 1f, 0f, 1f));
-        debugRenderer.rect(world.player!!.bounds.x, world.player!!.bounds.y, world.player!!.bounds.width, world.player!!.bounds.height);
-        debugRenderer.end()*/
+        debugRenderer.rect(world.player!!.bounds.x, world.player!!.bounds.y, world.player!!.bounds.width, world.player!!.bounds.height)
+        for (sewer: Sewer in world.sewers) {
+            debugRenderer.rect(sewer.bounds.x,sewer.bounds.y,sewer.bounds.width, sewer.bounds.height)
+        }
+        debugRenderer.end()
 
         originY-=DEFAULT_CAMERA_SPEED
 }

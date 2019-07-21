@@ -15,11 +15,11 @@ abstract class GameObject(var position: Vector2, var bounds: Rectangle, var boun
     }
 
     private val objID: ObjectID? = null
-    private val alive: Boolean = false
+    var alive: Boolean = true
     private val collidable: Boolean = false
     private val health: Float = 0.toFloat()
     private val damage: Float = 0.toFloat()
-    private var stateTime = 0f
+    var stateTime = 0f
     private var remove: Boolean = false
 
     var velocity = Vector2()
@@ -31,8 +31,8 @@ abstract class GameObject(var position: Vector2, var bounds: Rectangle, var boun
         remove = false
     }
 
-    fun update(delta: Float, camOffsetLeft: Float, camOffsetRight: Float,
-               viewportWidth: Int, viewportHeight: Int, playerPosition: Vector2) {
+    open fun update(delta: Float, camOffsetLeft: Float, camOffsetRight: Float,
+                    viewportWidth: Int, viewportHeight: Int, playerPosition: Vector2) {
         stateTime += delta
        position.mulAdd(velocity,delta)
     }
