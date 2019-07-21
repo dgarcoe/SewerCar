@@ -17,7 +17,7 @@ import com.dgarcoe.sewercar.entities.Sewer
  */
 class WorldRenderer(var world: World) {
 
-    private val DEFAULT_CAMERA_SPEED = 1f
+    private val DEFAULT_CAMERA_SPEED = 2f
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
     var cam: OrthographicCamera? = null
@@ -76,6 +76,7 @@ class WorldRenderer(var world: World) {
                 sewer.position.y -= DEFAULT_CAMERA_SPEED
                 sewer.bounds.y -= DEFAULT_CAMERA_SPEED
             } else {
+                Gdx.app.log("LOL","REMOVED")
                 world.sewers.remove(sewer)
             }
         }

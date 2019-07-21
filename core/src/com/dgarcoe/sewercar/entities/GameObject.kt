@@ -16,9 +16,9 @@ abstract class GameObject(var position: Vector2, var bounds: Rectangle, var boun
 
     private val objID: ObjectID? = null
     var alive: Boolean = true
-    private val collidable: Boolean = false
-    private val health: Float = 0.toFloat()
-    private val damage: Float = 0.toFloat()
+    var collidable: Boolean = true
+    var health: Float = 0.toFloat()
+    var damage: Float = 0.toFloat()
     var stateTime = 0f
     private var remove: Boolean = false
 

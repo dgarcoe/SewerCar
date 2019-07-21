@@ -24,6 +24,7 @@ class World {
 
     init {
         player = PlayerCar(Vector2(85f, 10f), Rectangle(85f,10f,24f,48f),Vector2(0f,0f))
+        player!!.health = 100F
     }
 
     fun cleanAll() {
@@ -40,8 +41,6 @@ class World {
         val random = Random()
 
         val positionX = random.nextInt(84-8)+8
-
-        Gdx.app.log("LOL",positionX.toString())
 
         sewers.add(Sewer(Vector2(positionX.toFloat(),300f), Rectangle(positionX.toFloat(),300f,22f,22f), Vector2(22f,22f)))
 

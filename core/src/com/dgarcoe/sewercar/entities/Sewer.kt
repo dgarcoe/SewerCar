@@ -14,6 +14,10 @@ class Sewer(position: Vector2, bounds: Rectangle, boundsSize: Vector2) :
     val BOUNDX = 32
     val BOUNDY = 32
 
+    init {
+        damage = 5F
+    }
+
     fun update(positionUpdate: Vector3, boundsUpdate: Vector3) {
 
         position.x = positionUpdate.x

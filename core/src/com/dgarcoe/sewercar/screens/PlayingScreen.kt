@@ -10,8 +10,7 @@ import com.dgarcoe.sewercar.renderers.WorldRenderer
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Timer
 import com.badlogic.gdx.utils.Timer.Task
-
-
+import com.dgarcoe.sewercar.entities.Sewer
 
 
 /**
@@ -41,12 +40,20 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        worldRenderer.render()
-
         if (elapsed > SEWER_GENERATION_TIME) {
             game.world.generateSewer()
             elapsed = 0f
         }
+
+        for (sewer:Sewer in game.world.sewers) {
+            if (sewer.collided(game.world.player!!)) {
+                sewer.collidable = false
+                game.world.player!!.health -= sewer.damage
+                Gdx.input.vibrate(250)
+            }
+        }
+
+        worldRenderer.render()
     }
 
     override fun pause() {
