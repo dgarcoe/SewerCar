@@ -19,6 +19,7 @@ abstract class GameObject(var position: Vector2, var bounds: Rectangle, var boun
     var collidable: Boolean = true
     var health: Float = 0.toFloat()
     var damage: Float = 0.toFloat()
+    var points: Int = 0
     var stateTime = 0f
     private var remove: Boolean = false
 

@@ -65,6 +65,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
 
         val healthNo = Math.round(game.world.player!!.health)
         health!!.setText("Health: " + Integer.toString(healthNo))
+        score!!.setText("Score: " + String.format("%06d", game.world.player!!.score))
     }
 
     override fun show() {

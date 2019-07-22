@@ -78,6 +78,9 @@ class WorldRenderer(var world: World) {
                 sewer.position.y -= DEFAULT_CAMERA_SPEED
                 sewer.bounds.y -= DEFAULT_CAMERA_SPEED
             } else {
+                if (sewer.collidable) {
+                    world.player!!.score += sewer.points
+                }
                 sewerIterator.remove()
             }
         }

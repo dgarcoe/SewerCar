@@ -17,6 +17,7 @@ class Sewer(position: Vector2, bounds: Rectangle, boundsSize: Vector2) :
 
     init {
         damage = 5F
+        points = 10
     }
 
     fun update() {
