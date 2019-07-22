@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 class PlayerCar(position: Vector2, bounds: Rectangle, boundsSize: Vector2) :
         Car(position,bounds,boundsSize) {
 
-    private val score: Long = 0
+    val score: Long = 0
 
     fun update(positionUpdate: Vector3, boundsUpdate: Vector3) {
         position.x = positionUpdate.x

@@ -34,7 +34,7 @@ class SewerCarGame : Game() {
     override fun create() {
         skin = Skin(Gdx.files.internal("skin/metal/skin/metal-ui.json"))
         mainMenuScreen = MainMenuScreen(this,skin)
-        playingScreen = PlayingScreen(this)
+        playingScreen = PlayingScreen(this,skin)
 
         world = World()
 

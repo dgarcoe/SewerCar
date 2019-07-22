@@ -11,12 +11,18 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Timer
 import com.badlogic.gdx.utils.Timer.Task
 import com.dgarcoe.sewercar.entities.Sewer
+import com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table
+import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 
 
 /**
  * Created by Daniel on 23/06/2019.
  */
-class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
+class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProcessor {
 
     lateinit var worldRenderer : WorldRenderer
 
@@ -24,12 +30,47 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
 
     val SEWER_GENERATION_TIME = 2f
 
+    val stage: Stage = Stage()
+    val table: Table = Table(skin)
+
+    var health: Label? = null
+    var score: Label? = null
+
     override fun hide() {
 
     }
 
+    private fun initStage() {
+       table.setFillParent(true)
+    }
+
+    private fun setStage() {
+
+        health = Label("Health: " + game.world.player!!.health, skin)
+        health!!.setColor(0.1f, 1f, 0.1f, 1f)
+        health!!.setFontScale(2f)
+
+        score = Label("Score: " + String.format("%06d", game.world.player!!.score), skin)
+        score!!.setColor(126f, 1f, 1f, 1f)
+        score!!.setFontScale(2f)
+
+
+        table.top()
+        table.add(score).expandX().center().row()
+        table.add(health).left().row()
+        stage.addActor(table)
+    }
+
+    private fun updateHUD() {
+
+        val healthNo = Math.round(game.world.player!!.health)
+        health!!.setText("Health: " + Integer.toString(healthNo))
+    }
+
     override fun show() {
         worldRenderer = WorldRenderer(game.world)
+        initStage()
+        setStage()
         Gdx.input.setInputProcessor(this);
 
     }
@@ -54,6 +95,10 @@ class PlayingScreen (val game: SewerCarGame): Screen, InputProcessor {
         }
 
         worldRenderer.render()
+
+        stage.act(delta);
+        updateHUD();
+        stage.draw();
     }
 
     override fun pause() {
