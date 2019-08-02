@@ -14,9 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.dgarcoe.sewercar.SewerCarGame
 
 /**
- * Created by Daniel on 23/06/2019.
+ * Created by Daniel on 02/08/2019.
  */
-class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProcessor {
+class GameOverScreen(val game: SewerCarGame, val skin: Skin): Screen, InputProcessor {
 
     lateinit var stage: Stage
     lateinit var table: Table
@@ -24,17 +24,16 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
     private fun initStage() {
         stage = Stage()
         table = Table(skin)
-
         table.setFillParent(true)
         Gdx.input.inputProcessor = stage
     }
 
     private fun setStage() {
 
-        val heading = Label("Sewer Car", skin, "white")
+        val heading = Label("GAME OVER", skin, "white")
         heading.setFontScale(3f)
 
-        val buttonStartGame = TextButton("Play", skin, "default")
+        val buttonStartGame = TextButton("Play again", skin, "default")
         buttonStartGame.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.startGame()
@@ -43,14 +42,14 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
         buttonStartGame.label.setFontScale(2f)
         buttonStartGame.pad(15f)
 
-        val buttonSettings = TextButton("Settings", skin, "default")
-        buttonSettings.addListener(object : ClickListener() {
+        val buttonMainMenu = TextButton("Main menu", skin, "default")
+        buttonMainMenu.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-
+                game.goMainMenu()
             }
         })
-        buttonSettings.label.setFontScale(2f)
-        buttonSettings.pad(15f)
+        buttonMainMenu.label.setFontScale(2f)
+        buttonMainMenu.pad(15f)
 
         val buttonExit = TextButton("Exit", skin)
         buttonExit.addListener(object : ClickListener() {
@@ -64,12 +63,11 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
 
         table.add(heading).spaceBottom(100f).expandX().row()
         table.add(buttonStartGame).width(500f).height(100f).spaceBottom(15f).row()
-        table.add(buttonSettings).width(500f).height(100f).spaceBottom(15f).row()
+        table.add(buttonMainMenu).width(500f).height(100f).spaceBottom(15f).row()
         table.add(buttonExit).width(500f).height(100f).spaceBottom(15f).row()
 
         stage.addActor(table)
     }
-
 
     override fun hide() {
         dispose()
@@ -77,7 +75,6 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
     }
 
     override fun show() {
-        println("Starting main menu")
         initStage()
         setStage()
     }
@@ -103,8 +100,6 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
     }
 
     override fun dispose() {
-        Gdx.app.log("GAME MENU", "Disposing main menu things");
-
         stage.dispose()
     }
 
@@ -139,4 +134,6 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+
 }

@@ -13,6 +13,15 @@ class PlayerCar(position: Vector2, bounds: Rectangle, boundsSize: Vector2) :
 
     var score: Long = 0
 
+    fun init() {
+        health = 100F
+        score = 0
+        position.x = 85F
+        position.y = 10F
+        bounds.x = 85F
+        bounds.y = 10F
+    }
+
     fun update(positionUpdate: Vector3, boundsUpdate: Vector3) {
         position.x = positionUpdate.x
         bounds.x = boundsUpdate.x

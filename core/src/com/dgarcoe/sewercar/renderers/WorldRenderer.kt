@@ -101,4 +101,10 @@ class WorldRenderer(var world: World) {
         originY-=DEFAULT_CAMERA_SPEED
 }
 
+    fun dispose() {
+        playerRenderer!!.dispose()
+        sewerRenderer!!.dispose()
+        texture!!.dispose()
+    }
+
 }

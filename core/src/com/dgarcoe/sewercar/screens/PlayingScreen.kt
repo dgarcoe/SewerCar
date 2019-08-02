@@ -30,17 +30,21 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
 
     val SEWER_GENERATION_TIME = 2f
 
-    val stage: Stage = Stage()
-    val table: Table = Table(skin)
+    lateinit var stage: Stage
+    lateinit var table: Table
 
     var health: Label? = null
     var score: Label? = null
 
     override fun hide() {
-
+        dispose()
+        Gdx.input.inputProcessor = null
     }
 
     private fun initStage() {
+        stage = Stage()
+        table = Table(skin)
+
        table.setFillParent(true)
     }
 
@@ -72,6 +76,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
         worldRenderer = WorldRenderer(game.world)
         initStage()
         setStage()
+
         Gdx.input.setInputProcessor(this);
 
     }
@@ -81,6 +86,10 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
 
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
+        if (game.world.player!!.health<=0) {
+            game.endGame()
+        }
 
         if (elapsed > SEWER_GENERATION_TIME) {
             game.world.generateSewer()
@@ -115,7 +124,8 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
     }
 
     override fun dispose() {
-
+        stage.dispose()
+        worldRenderer.dispose()
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {

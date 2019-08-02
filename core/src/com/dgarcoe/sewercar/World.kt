@@ -24,7 +24,6 @@ class World {
 
     init {
         player = PlayerCar(Vector2(85f, 10f), Rectangle(85f,10f,24f,48f),Vector2(0f,0f))
-        player!!.health = 100F
     }
 
     fun cleanAll() {

@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.dgarcoe.sewercar.gamestates.GameOverState
 import com.dgarcoe.sewercar.gamestates.MainMenuState
 import com.dgarcoe.sewercar.gamestates.PlayingState
 import com.dgarcoe.sewercar.gamestates.SewerCarGameState
+import com.dgarcoe.sewercar.screens.GameOverScreen
 import com.dgarcoe.sewercar.screens.MainMenuScreen
 import com.dgarcoe.sewercar.screens.PlayingScreen
 
@@ -27,6 +29,9 @@ class SewerCarGame : Game() {
     val playingState : PlayingState = PlayingState(this)
     lateinit var playingScreen : PlayingScreen
 
+    val gameOverState: GameOverState = GameOverState(this)
+    lateinit var gameOverScreen : GameOverScreen
+
     lateinit var skin: Skin
 
     lateinit var world: World
@@ -35,6 +40,8 @@ class SewerCarGame : Game() {
         skin = Skin(Gdx.files.internal("skin/metal/skin/metal-ui.json"))
         mainMenuScreen = MainMenuScreen(this,skin)
         playingScreen = PlayingScreen(this,skin)
+        gameOverScreen = GameOverScreen(this,skin)
+
 
         world = World()
 
@@ -49,10 +56,12 @@ class SewerCarGame : Game() {
     }
 
     fun startGame() {
+        world.player!!.init()
         currentState.startGame()
     }
 
     fun endGame() {
+        world.cleanAll()
         currentState.endGame()
     }
 
