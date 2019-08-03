@@ -17,6 +17,9 @@ import com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.tabl
 import aurelienribon.tweenengine.Tween
 import aurelienribon.tweenengine.Timeline
 import aurelienribon.tweenengine.Tween.registerAccessor
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.dgarcoe.sewercar.ui.tween.ActorAccessor
 
@@ -26,12 +29,31 @@ import com.dgarcoe.sewercar.ui.tween.ActorAccessor
  */
 class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProcessor {
 
+    private val WIDTH_CAMERA = 128
+    private val HEIGHT_CAMERA = 256
+
     lateinit var stage: Stage
     lateinit var table: Table
 
     private var tweenManager: TweenManager? = null
 
+    private var batch: SpriteBatch? = null
+    private var texture: Texture? = null
+    private val width: Int = 128
+    private val height : Int = 256
+    var cam: OrthographicCamera? = null
+
     private fun initStage() {
+        cam = OrthographicCamera(WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
+        cam!!.setToOrtho(false, WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
+        cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
+        cam!!.update()
+
+
+        batch = SpriteBatch()
+
+        texture = Texture(Gdx.files.internal("bg/road.png"));
+
         stage = Stage()
         table = Table(skin)
 
@@ -134,6 +156,13 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
+        cam!!.update()
+
+        batch!!.setProjectionMatrix(cam!!.combined)
+        batch!!.begin()
+        batch!!.draw(texture,0f,0f,0,0, width, height)
+        batch!!.end()
+
         stage.act(delta)
         stage.draw()
         tweenManager!!.update(delta);
@@ -153,7 +182,7 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
 
     override fun dispose() {
         Gdx.app.log("GAME MENU", "Disposing main menu things");
-
+        texture!!.dispose()
         stage.dispose()
     }
 
