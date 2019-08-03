@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.dgarcoe.sewercar.SewerCarGame
+import javax.swing.text.LabelView
 
 /**
  * Created by Daniel on 02/08/2019.
@@ -32,6 +33,10 @@ class GameOverScreen(val game: SewerCarGame, val skin: Skin): Screen, InputProce
 
         val heading = Label("GAME OVER", skin, "white")
         heading.setFontScale(3f)
+
+
+        val score = Label("Score: "+game.world.player!!.score, skin, "white")
+        score.setFontScale(2f)
 
         val buttonStartGame = TextButton("Play again", skin, "default")
         buttonStartGame.addListener(object : ClickListener() {
@@ -62,6 +67,7 @@ class GameOverScreen(val game: SewerCarGame, val skin: Skin): Screen, InputProce
         buttonExit.pad(15f)
 
         table.add(heading).spaceBottom(100f).expandX().row()
+        table.add(score).spaceBottom(100f).expandX().row()
         table.add(buttonStartGame).width(500f).height(100f).spaceBottom(15f).row()
         table.add(buttonMainMenu).width(500f).height(100f).spaceBottom(15f).row()
         table.add(buttonExit).width(500f).height(100f).spaceBottom(15f).row()
