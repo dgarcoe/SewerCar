@@ -1,5 +1,6 @@
 package com.dgarcoe.sewercar.screens
 
+import aurelienribon.tweenengine.TweenManager
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
@@ -12,6 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.dgarcoe.sewercar.SewerCarGame
+import com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table
+import aurelienribon.tweenengine.Tween
+import aurelienribon.tweenengine.Timeline
+import aurelienribon.tweenengine.Tween.registerAccessor
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.dgarcoe.sewercar.ui.tween.ActorAccessor
+
 
 /**
  * Created by Daniel on 23/06/2019.
@@ -20,6 +28,8 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
 
     lateinit var stage: Stage
     lateinit var table: Table
+
+    private var tweenManager: TweenManager? = null
 
     private fun initStage() {
         stage = Stage()
@@ -68,6 +78,44 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
         table.add(buttonExit).width(500f).height(100f).spaceBottom(15f).row()
 
         stage.addActor(table)
+        stageAnimations(heading,buttonStartGame,buttonSettings,buttonExit)
+    }
+
+    private fun stageAnimations(heading: Label, buttonPlay: TextButton, buttonSettings: TextButton,
+                                buttonExit: TextButton) {
+
+        //Creating animations with Tween engine
+        tweenManager = TweenManager()
+        registerAccessor(Actor::class.java, ActorAccessor())
+
+        //Heading colour animation
+        Timeline.createSequence().beginSequence()
+                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(0f, 0f, 1f))
+                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(0f, 1f, 0f))
+                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(0f, 1f, 1f))
+                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(1f, 0f, 0f))
+                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(1f, 1f, 0f))
+                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(1f, 0f, 1f))
+                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(1f, 1f, 1f))
+                .end().repeat(Tween.INFINITY, 0f).start(tweenManager)
+
+        //Heading and buttons fade-in
+        Timeline.createSequence().beginSequence()
+                .push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0f))
+                .push(Tween.set(buttonSettings, ActorAccessor.ALPHA).target(0f))
+                .push(Tween.set(buttonExit, ActorAccessor.ALPHA).target(0f))
+                .push(Tween.from(heading, ActorAccessor.ALPHA, .5f).target(0f))
+                .push(Tween.to(buttonPlay, ActorAccessor.ALPHA, .1f).target(1f))
+                .push(Tween.to(buttonSettings, ActorAccessor.ALPHA, .1f).target(1f))
+                .push(Tween.to(buttonExit, ActorAccessor.ALPHA, .1f).target(1f))
+                .end().start(tweenManager)
+
+        //Table fade-in
+        Tween.from(table, ActorAccessor.ALPHA, .5f).target(0f).start(tweenManager)
+        Tween.from(table, ActorAccessor.Y, .5f).target((Gdx.graphics.height / 8).toFloat()).start(tweenManager)
+
+        tweenManager!!.update(Gdx.graphics.deltaTime)
+
     }
 
 
@@ -88,6 +136,7 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
 
         stage.act(delta)
         stage.draw()
+        tweenManager!!.update(delta);
     }
 
     override fun pause() {

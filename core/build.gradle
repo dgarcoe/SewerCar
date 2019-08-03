@@ -12,4 +12,5 @@ eclipse.project {
 
 dependencies {
     compile 'org.lwjgl.lwjgl:lwjgl_util:2.9.2'
+    compile 'org.mini2Dx:universal-tween-engine:6.3.3'
 }

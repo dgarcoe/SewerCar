@@ -50,6 +50,7 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        compile "org.mini2Dx:universal-tween-engine:6.3.3"
     }
 }
 
