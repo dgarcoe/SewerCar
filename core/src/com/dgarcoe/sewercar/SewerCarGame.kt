@@ -1,9 +1,6 @@
 package com.dgarcoe.sewercar
 
-import com.badlogic.gdx.ApplicationAdapter
-import com.badlogic.gdx.Game
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Screen
+import com.badlogic.gdx.*
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -19,6 +16,8 @@ import com.dgarcoe.sewercar.screens.PlayingScreen
 class SewerCarGame : Game() {
 
     private val TAG = "SewerCarGame"
+
+    var preferences : Preferences? = null
 
     lateinit var currentState : SewerCarGameState
     lateinit var currentScreen : Screen
@@ -37,6 +36,8 @@ class SewerCarGame : Game() {
     lateinit var world: World
 
     override fun create() {
+        preferences = Gdx.app.getPreferences("SewerCarPreferences")
+
         skin = Skin(Gdx.files.internal("skin/metal/skin/metal-ui.json"))
         mainMenuScreen = MainMenuScreen(this,skin)
         playingScreen = PlayingScreen(this,skin)
@@ -62,6 +63,10 @@ class SewerCarGame : Game() {
 
     fun endGame() {
         world.cleanAll()
+        val highScore = preferences!!.getLong("HiScore")
+        if (world.player!!.score>highScore) {
+            preferences!!.putLong("HiScore",world.player!!.score)
+        }
         currentState.endGame()
     }
 

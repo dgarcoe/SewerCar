@@ -35,7 +35,9 @@ class GameOverScreen(val game: SewerCarGame, val skin: Skin): Screen, InputProce
         heading.setFontScale(3f)
 
 
+        val hiScore = Label("High score: "+game.preferences!!.getLong("HiScore"),skin,"white")
         val score = Label("Score: "+game.world.player!!.score, skin, "white")
+        hiScore.setFontScale(2f)
         score.setFontScale(2f)
 
         val buttonStartGame = TextButton("Play again", skin, "default")
@@ -67,7 +69,8 @@ class GameOverScreen(val game: SewerCarGame, val skin: Skin): Screen, InputProce
         buttonExit.pad(15f)
 
         table.add(heading).spaceBottom(100f).expandX().row()
-        table.add(score).spaceBottom(100f).expandX().row()
+        table.add(hiScore).spaceBottom(30f).expandX().row()
+        table.add(score).spaceBottom(30f).expandX().row()
         table.add(buttonStartGame).width(500f).height(100f).spaceBottom(15f).row()
         table.add(buttonMainMenu).width(500f).height(100f).spaceBottom(15f).row()
         table.add(buttonExit).width(500f).height(100f).spaceBottom(15f).row()
