@@ -28,7 +28,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
 
     var elapsed: Float = 0.0f
 
-    val SEWER_GENERATION_TIME = 2f
+    val SEWER_GENERATION_TIME = 1.2f
 
     lateinit var stage: Stage
     lateinit var table: Table

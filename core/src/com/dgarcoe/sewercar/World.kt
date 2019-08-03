@@ -13,6 +13,13 @@ import java.util.*
  */
 class World {
 
+    val MIN_SEWERS = 1
+    val MAX_SEWERS = 5
+
+    val MIDDLE_SCENE = 46
+    val LEFT_BORDER = 8
+    val RIGHT_BORDER = 84
+
     var sewers = mutableListOf<Sewer>()
     var player: PlayerCar? = null
 
@@ -37,12 +44,26 @@ class World {
     }
 
     fun generateSewer() {
-        val random = Random()
 
-        val positionX = random.nextInt(84-8)+8
+        val randomGenerator = Random()
 
-        sewers.add(Sewer(Vector2(positionX.toFloat(),300f), Rectangle(positionX.toFloat(),300f,22f,22f), Vector2(22f,22f)))
+        val numberSewers = randomGenerator.nextInt(MAX_SEWERS-MIN_SEWERS)+MIN_SEWERS
+        var previousPosX = 0
+        var positionX: Int
 
+        for (i in 1..numberSewers) {
+            if (previousPosX<MIDDLE_SCENE) {
+                positionX = randomGenerator.nextInt(RIGHT_BORDER-MIDDLE_SCENE)+MIDDLE_SCENE
+            } else {
+                positionX = randomGenerator.nextInt(MIDDLE_SCENE-LEFT_BORDER)+LEFT_BORDER
+            }
+
+            previousPosX = positionX
+            val offsetY = randomGenerator.nextInt(36-24)+24
+            val positionY = 250+offsetY*(i-1)
+
+            sewers.add(Sewer(Vector2(positionX.toFloat(),positionY.toFloat()), Rectangle(positionX.toFloat(),positionY.toFloat(),22f,22f), Vector2(22f,22f)))
+        }
     }
 
 }

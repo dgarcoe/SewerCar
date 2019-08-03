@@ -17,7 +17,7 @@ import com.dgarcoe.sewercar.entities.Sewer
  */
 class WorldRenderer(var world: World) {
 
-    private val DEFAULT_CAMERA_SPEED = 2f
+    private val DEFAULT_CAMERA_SPEED = 3f
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
     var cam: OrthographicCamera? = null
