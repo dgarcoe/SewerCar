@@ -64,8 +64,8 @@ class WorldRenderer(var world: World) {
         cam!!.position.set(cam!!.position.x, cam!!.position.y, 0f)
         cam!!.update()
 
-        batch!!.setProjectionMatrix(cam!!.combined)
         batch!!.begin()
+        batch!!.setProjectionMatrix(cam!!.combined)
         batch!!.enableBlending()
 
         batch!!.draw(texture,0f,0f,0,originY.toInt(), width, height)
@@ -99,6 +99,7 @@ class WorldRenderer(var world: World) {
         debugRenderer.end()*/
 
         originY-=DEFAULT_CAMERA_SPEED
+
 }
 
     fun dispose() {

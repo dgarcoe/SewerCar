@@ -66,6 +66,7 @@ class SewerCarGame : Game() {
         val highScore = preferences!!.getLong("HiScore")
         if (world.player!!.score>highScore) {
             preferences!!.putLong("HiScore",world.player!!.score)
+            preferences!!.flush()
         }
         currentState.endGame()
     }
