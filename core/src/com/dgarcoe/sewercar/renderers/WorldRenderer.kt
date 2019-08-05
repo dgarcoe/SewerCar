@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.utils.viewport.FitViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.sewercar.entities.Sewer
 
 /**
@@ -17,10 +19,11 @@ import com.dgarcoe.sewercar.entities.Sewer
  */
 class WorldRenderer(var world: World) {
 
-    private val DEFAULT_CAMERA_SPEED = 3f
+    private val DEFAULT_CAMERA_SPEED = 150f
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
     var cam: OrthographicCamera? = null
+    var viewPort: Viewport? = null
 
     private var batch: SpriteBatch? = null
     private var texture: Texture? = null
@@ -35,20 +38,21 @@ class WorldRenderer(var world: World) {
     var debugRenderer = ShapeRenderer()
 
     init {
-      cam = OrthographicCamera(WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
+
+        val aspectRatio = Gdx.graphics.height/Gdx.graphics.width
+
+        cam = OrthographicCamera()
+        viewPort = FitViewport(WIDTH_CAMERA.toFloat()*aspectRatio, HEIGHT_CAMERA.toFloat(),cam)
+        (viewPort as FitViewport).apply()
         cam!!.setToOrtho(false, WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
         cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
-        world.camOffsetUp = HEIGHT_CAMERA.toFloat()
-        world.camOffsetDown = 0f
-        world.viewportHeight = HEIGHT_CAMERA
-        world.viewportWidth = WIDTH_CAMERA
 
         cam!!.update()
 
         batch = SpriteBatch()
 
-        texture = Texture(Gdx.files.internal("bg/road.png"));
-        texture!!.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
+        texture = Texture(Gdx.files.internal("bg/road.png"))
+        texture!!.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.Repeat)
         playerRenderer = PlayerRenderer(batch!!)
         playerRenderer!!.loadEntityTextures()
         sewerRenderer = SewerRenderer(batch!!)
@@ -56,7 +60,7 @@ class WorldRenderer(var world: World) {
 
     }
 
-    fun render() {
+    fun render(delta: Float) {
 
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -68,15 +72,15 @@ class WorldRenderer(var world: World) {
         batch!!.setProjectionMatrix(cam!!.combined)
         batch!!.enableBlending()
 
-        batch!!.draw(texture,0f,0f,0,originY.toInt(), width, height)
+        batch!!.draw(texture,0f,0f,0, originY.toInt(), width, height)
         val sewerIterator = world.sewers.iterator()
         for (sewer in sewerIterator) {
             sewer.update()
 
             if (sewer.alive) {
                 sewerRenderer!!.drawEntity(sewer)
-                sewer.position.y -= DEFAULT_CAMERA_SPEED
-                sewer.bounds.y -= DEFAULT_CAMERA_SPEED
+                sewer.position.y -= DEFAULT_CAMERA_SPEED*delta
+                sewer.bounds.y -= DEFAULT_CAMERA_SPEED*delta
             } else {
                 if (sewer.collidable) {
                     world.player!!.score += sewer.points
@@ -98,9 +102,16 @@ class WorldRenderer(var world: World) {
         }
         debugRenderer.end()*/
 
-        originY-=DEFAULT_CAMERA_SPEED
+        originY-=DEFAULT_CAMERA_SPEED*delta
 
 }
+
+    fun resize(width: Int, height: Int)  {
+        viewPort!!.update(width, height)
+        cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
+        batch!!.setProjectionMatrix(cam!!.combined)
+
+    }
 
     fun dispose() {
         playerRenderer!!.dispose()

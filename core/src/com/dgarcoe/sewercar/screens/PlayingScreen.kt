@@ -104,11 +104,11 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
             }
         }
 
-        worldRenderer.render()
+        worldRenderer.render(delta)
 
-        stage.act(delta);
-        updateHUD();
-        stage.draw();
+        stage.act(delta)
+        updateHUD()
+        stage.draw()
     }
 
     override fun pause() {
@@ -120,7 +120,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
     }
 
     override fun resize(width: Int, height: Int) {
-
+        worldRenderer.resize(width,height)
     }
 
     override fun dispose() {
