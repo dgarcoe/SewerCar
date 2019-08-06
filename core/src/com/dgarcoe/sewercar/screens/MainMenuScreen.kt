@@ -21,9 +21,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.sewercar.ui.tween.ActorAccessor
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.run
+
+
 
 
 /**
@@ -98,8 +103,7 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
         val buttonExit = TextButton("Exit", skin)
         buttonExit.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                //stage.addAction(sequence(fadeOut(0.5f), run(Runnable { Gdx.app.exit() })))
-                Gdx.app.exit()
+                stage.addAction(sequence(fadeOut(0.5f), run(Runnable { Gdx.app.exit() })))
             }
         })
         buttonExit.label.setFontScale(2f)
