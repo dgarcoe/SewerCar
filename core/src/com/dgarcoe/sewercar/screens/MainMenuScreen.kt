@@ -16,7 +16,6 @@ import com.dgarcoe.sewercar.SewerCarGame
 import aurelienribon.tweenengine.Tween
 import aurelienribon.tweenengine.Timeline
 import aurelienribon.tweenengine.Tween.registerAccessor
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -28,11 +27,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.sewercar.ui.tween.ActorAccessor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.run
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
-
-
-
-
 
 
 /**
@@ -53,7 +47,8 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin,
     private var tweenManager: TweenManager? = null
 
     private var batch: SpriteBatch? = null
-    private var texture: Texture? = null
+    private var textureBg: Texture? = null
+    private var textureSewer: Texture? = null
     private val width: Int = 128
     private val height : Int = 256
     var cam: OrthographicCamera? = null
@@ -73,7 +68,8 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin,
 
         batch = SpriteBatch()
 
-        texture = Texture(Gdx.files.internal("bg/road.png"))
+        textureBg = Texture(Gdx.files.internal("bg/road.png"))
+        textureSewer = Texture(Gdx.files.internal("sewers/basic_sewer.png"))
 
         stage = Stage()
         table = Table(skin)
@@ -171,7 +167,10 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin,
 
         batch!!.setProjectionMatrix(cam!!.combined)
         batch!!.begin()
-        batch!!.draw(texture,0f,0f,0,0, width, height)
+        batch!!.draw(textureBg,0f,0f,0,0, width, height)
+        batch!!.draw(textureSewer,80f,20f,0,0, 22, 22)
+        batch!!.draw(textureSewer,10f,100f,0,0, 22, 22)
+        batch!!.draw(textureSewer,40f,200f,0,0, 22, 22)
         batch!!.end()
 
         stage.act(delta)
@@ -195,7 +194,8 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin,
 
     override fun dispose() {
         Gdx.app.log("GAME MENU", "Disposing main menu things");
-        texture!!.dispose()
+        textureBg!!.dispose()
+        textureSewer!!.dispose()
         stage.dispose()
     }
 
