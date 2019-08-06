@@ -3,7 +3,9 @@ package com.dgarcoe.sewercar.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.math.Rectangle
 import com.dgarcoe.sewercar.SewerCarGame
 import com.dgarcoe.sewercar.renderers.WorldRenderer
@@ -17,12 +19,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 
 
 /**
  * Created by Daniel on 23/06/2019.
  */
 class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProcessor {
+
+    private val HEALTHBAR_HEIGHT_PERCENT = 0.02f
+    private val HEALTHBAR_WIDTH_PERCENT = 0.25f
+    private val HEALTHBAR_PAINT_PERCENT_TOP = 0.07f
+    private val HEALTHBAR_PAINT_PERCENT_LEFT = 0.01f
+
 
     lateinit var worldRenderer : WorldRenderer
 
@@ -33,8 +45,10 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
     lateinit var stage: Stage
     lateinit var table: Table
 
-    var health: Label? = null
     var score: Label? = null
+
+    var progressBarStyle: ProgressBar.ProgressBarStyle? = null
+    var healthBar: ProgressBar? = null
 
     override fun hide() {
         dispose()
@@ -45,14 +59,53 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
         stage = Stage()
         table = Table(skin)
 
-       table.setFillParent(true)
+        table.setFillParent(true)
+
+        configureHealthbar()
+    }
+
+    private fun configureHealthbar() {
+
+        progressBarStyle = ProgressBar.ProgressBarStyle()
+
+        var pixmap = Pixmap(Math.round(Gdx.graphics.width * HEALTHBAR_WIDTH_PERCENT),
+                Math.round(Gdx.graphics.height * HEALTHBAR_HEIGHT_PERCENT), Pixmap.Format.RGBA8888)
+        pixmap.setColor(Color.RED)
+        pixmap.fill()
+        var drawable = TextureRegionDrawable(TextureRegion(Texture(pixmap)))
+        pixmap.dispose()
+
+        progressBarStyle!!.background = drawable
+
+        pixmap = Pixmap(0,
+                Math.round(Gdx.graphics.height * HEALTHBAR_HEIGHT_PERCENT), Pixmap.Format.RGBA8888)
+        pixmap.setColor(Color.GREEN)
+        pixmap.fill()
+        drawable = TextureRegionDrawable(TextureRegion(Texture(pixmap)))
+        pixmap.dispose()
+
+        progressBarStyle!!.knob = drawable
+
+        pixmap = Pixmap(Math.round(Gdx.graphics.width * HEALTHBAR_WIDTH_PERCENT),
+                Math.round(Gdx.graphics.height * HEALTHBAR_HEIGHT_PERCENT), Pixmap.Format.RGBA8888)
+        pixmap.setColor(Color.GREEN)
+        pixmap.fill()
+        drawable = TextureRegionDrawable(TextureRegion(Texture(pixmap)))
+        pixmap.dispose()
+
+        progressBarStyle!!.knobBefore = drawable
+
+        healthBar = ProgressBar(0.0f, 100.0f, 5f, false, progressBarStyle);
+        healthBar!!.setValue(100.0f);
+        healthBar!!.setAnimateDuration(0.25f);
+        val paintPosY = Gdx.graphics.height - Gdx.graphics.height * HEALTHBAR_PAINT_PERCENT_TOP
+        val paintPosX = Gdx.graphics.width * HEALTHBAR_PAINT_PERCENT_LEFT
+        healthBar!!.setBounds(paintPosX, paintPosY, Gdx.graphics.width * HEALTHBAR_WIDTH_PERCENT,
+                Gdx.graphics.height * HEALTHBAR_HEIGHT_PERCENT)
+
     }
 
     private fun setStage() {
-
-        health = Label("Health: " + game.world.player!!.health, skin)
-        health!!.setColor(0.1f, 1f, 0.1f, 1f)
-        health!!.setFontScale(2f)
 
         score = Label("Score: " + String.format("%06d", game.world.player!!.score), skin)
         score!!.setColor(126f, 1f, 1f, 1f)
@@ -61,15 +114,14 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
 
         table.top()
         table.add(score).expandX().center().row()
-        table.add(health).left().row()
         stage.addActor(table)
+        stage.addActor(healthBar)
     }
 
     private fun updateHUD() {
 
-        val healthNo = Math.round(game.world.player!!.health)
-        health!!.setText("Health: " + Integer.toString(healthNo))
         score!!.setText("Score: " + String.format("%06d", game.world.player!!.score))
+        healthBar!!.setValue(game.world.player!!.health)
     }
 
     override fun show() {

@@ -1,11 +1,8 @@
 package com.dgarcoe.sewercar.renderers
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.*
 import com.dgarcoe.sewercar.World
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable
@@ -14,6 +11,9 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.sewercar.entities.Sewer
+import com.badlogic.gdx.graphics.Pixmap
+
+
 
 /**
  * Created by Daniel on 30/06/2019.
@@ -58,7 +58,6 @@ class WorldRenderer(var world: World) {
         playerRenderer!!.loadEntityTextures()
         sewerRenderer = SewerRenderer(batch!!)
         sewerRenderer!!.loadEntityTextures()
-
     }
 
     fun render(delta: Float) {
