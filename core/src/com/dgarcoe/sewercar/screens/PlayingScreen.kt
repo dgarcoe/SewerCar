@@ -40,7 +40,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
 
     var elapsed: Float = 0.0f
 
-    val SEWER_GENERATION_TIME = 1.2f
+    val SEWER_GENERATION_TIME = 1.5f
 
     lateinit var stage: Stage
     lateinit var table: Table
@@ -110,7 +110,6 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
         score = Label("Score: " + String.format("%06d", game.world.player!!.score), skin)
         score!!.setColor(126f, 1f, 1f, 1f)
         score!!.setFontScale(2f)
-
 
         table.top()
         table.add(score).expandX().center().row()
