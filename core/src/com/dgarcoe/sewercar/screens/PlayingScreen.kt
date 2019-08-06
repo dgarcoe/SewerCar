@@ -35,12 +35,11 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
     private val HEALTHBAR_PAINT_PERCENT_TOP = 0.07f
     private val HEALTHBAR_PAINT_PERCENT_LEFT = 0.01f
 
+    val SEWER_GENERATION_TIME = 1.5f
 
     lateinit var worldRenderer : WorldRenderer
 
     var elapsed: Float = 0.0f
-
-    val SEWER_GENERATION_TIME = 1.5f
 
     lateinit var stage: Stage
     lateinit var table: Table

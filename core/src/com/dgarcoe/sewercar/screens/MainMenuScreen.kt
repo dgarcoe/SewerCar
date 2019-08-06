@@ -21,6 +21,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.utils.viewport.FitViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.sewercar.ui.tween.ActorAccessor
 
 
@@ -32,6 +34,9 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
 
+    private val WIDTH_BUTTON_PERCENT = 0.45f
+    private val HEIGHT_BUTTON_PERCENT = 0.05f
+
     lateinit var stage: Stage
     lateinit var table: Table
 
@@ -42,9 +47,15 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
     private val width: Int = 128
     private val height : Int = 256
     var cam: OrthographicCamera? = null
+    var viewPort: Viewport? = null
 
     private fun initStage() {
+
+        val aspectRatio = Gdx.graphics.height/Gdx.graphics.width
+
         cam = OrthographicCamera(WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
+        viewPort = FitViewport(WIDTH_CAMERA.toFloat()*aspectRatio, HEIGHT_CAMERA.toFloat(),cam)
+        (viewPort as FitViewport).apply()
         cam!!.setToOrtho(false, WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
         cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
         cam!!.update()
@@ -94,10 +105,13 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
         buttonExit.label.setFontScale(2f)
         buttonExit.pad(15f)
 
+        val buttonWidth = Gdx.graphics.width*WIDTH_BUTTON_PERCENT
+        val buttonHeight = Gdx.graphics.height*HEIGHT_BUTTON_PERCENT
+
         table.add(heading).spaceBottom(100f).expandX().row()
-        table.add(buttonStartGame).width(500f).height(100f).spaceBottom(15f).row()
-        table.add(buttonSettings).width(500f).height(100f).spaceBottom(15f).row()
-        table.add(buttonExit).width(500f).height(100f).spaceBottom(15f).row()
+        table.add(buttonStartGame).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
+        table.add(buttonSettings).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
+        table.add(buttonExit).width(buttonWidth).height(buttonHeight).spaceBottom(15f).row()
 
         stage.addActor(table)
         stageAnimations(heading,buttonStartGame,buttonSettings,buttonExit)
@@ -177,7 +191,9 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
     }
 
     override fun resize(width: Int, height: Int) {
-
+        viewPort!!.update(width, height)
+        cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
+        batch!!.setProjectionMatrix(cam!!.combined)
     }
 
     override fun dispose() {
