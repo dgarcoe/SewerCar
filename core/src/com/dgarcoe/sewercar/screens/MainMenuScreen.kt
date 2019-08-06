@@ -13,12 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.dgarcoe.sewercar.SewerCarGame
-import com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table
 import aurelienribon.tweenengine.Tween
 import aurelienribon.tweenengine.Timeline
 import aurelienribon.tweenengine.Tween.registerAccessor
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut
@@ -27,6 +28,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.sewercar.ui.tween.ActorAccessor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.run
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+
+
 
 
 
@@ -34,7 +38,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions.run
 /**
  * Created by Daniel on 23/06/2019.
  */
-class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProcessor {
+class MainMenuScreen (val game: SewerCarGame, val skin: Skin,
+                      val fontTitle: BitmapFont): Screen, InputProcessor {
 
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
@@ -68,7 +73,7 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
 
         batch = SpriteBatch()
 
-        texture = Texture(Gdx.files.internal("bg/road.png"));
+        texture = Texture(Gdx.files.internal("bg/road.png"))
 
         stage = Stage()
         table = Table(skin)
@@ -79,25 +84,25 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
 
     private fun setStage() {
 
-        val heading = Label("Sewer Car", skin, "white")
-        heading.setFontScale(3f)
+        val headingStyle = Label.LabelStyle()
+        headingStyle.font = fontTitle
 
-        val buttonStartGame = TextButton("Play", skin, "default")
+        val heading = Label("Sewer Car", headingStyle)
+
+        val buttonStartGame = TextButton("Play", skin)
         buttonStartGame.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.startGame()
             }
         })
-        buttonStartGame.label.setFontScale(2f)
         buttonStartGame.pad(15f)
 
-        val buttonSettings = TextButton("Settings", skin, "default")
+        val buttonSettings = TextButton("Settings", skin)
         buttonSettings.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
 
             }
         })
-        buttonSettings.label.setFontScale(2f)
         buttonSettings.pad(15f)
 
         val buttonExit = TextButton("Exit", skin)
@@ -106,7 +111,6 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
                 stage.addAction(sequence(fadeOut(0.5f), run(Runnable { Gdx.app.exit() })))
             }
         })
-        buttonExit.label.setFontScale(2f)
         buttonExit.pad(15f)
 
         val buttonWidth = Gdx.graphics.width*WIDTH_BUTTON_PERCENT
@@ -127,17 +131,6 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProc
         //Creating animations with Tween engine
         tweenManager = TweenManager()
         registerAccessor(Actor::class.java, ActorAccessor())
-
-        //Heading colour animation
-        Timeline.createSequence().beginSequence()
-                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(0f, 0f, 1f))
-                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(0f, 1f, 0f))
-                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(0f, 1f, 1f))
-                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(1f, 0f, 0f))
-                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(1f, 1f, 0f))
-                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(1f, 0f, 1f))
-                .push(Tween.to(heading, ActorAccessor.RGB, 1f).target(1f, 1f, 1f))
-                .end().repeat(Tween.INFINITY, 0f).start(tweenManager)
 
         //Heading and buttons fade-in
         Timeline.createSequence().beginSequence()

@@ -3,8 +3,11 @@ package com.dgarcoe.sewercar.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -21,7 +24,8 @@ import javax.swing.text.LabelView
 /**
  * Created by Daniel on 02/08/2019.
  */
-class GameOverScreen(val game: SewerCarGame, val skin: Skin): Screen, InputProcessor {
+class GameOverScreen(val game: SewerCarGame, val skin: Skin, val fontTitle:BitmapFont,
+                     val fontScore:BitmapFont): Screen, InputProcessor {
 
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
@@ -56,31 +60,31 @@ class GameOverScreen(val game: SewerCarGame, val skin: Skin): Screen, InputProce
 
     private fun setStage() {
 
-        val heading = Label("GAME OVER", skin, "white")
-        heading.setFontScale(3f)
+        val headingStyle = Label.LabelStyle()
+        headingStyle.font = fontTitle
 
+        val scoreStyle = Label.LabelStyle()
+        scoreStyle.font = fontScore
 
-        val hiScore = Label("High score: "+game.preferences!!.getLong("HiScore"),skin,"white")
-        val score = Label("Score: "+game.world.player!!.score, skin, "white")
-        hiScore.setFontScale(2f)
-        score.setFontScale(2f)
+        val heading = Label("GAME OVER", headingStyle)
 
-        val buttonStartGame = TextButton("Play again", skin, "default")
+        val hiScore = Label("High score: "+game.preferences!!.getLong("HiScore"),scoreStyle)
+        val score = Label("Score: "+game.world.player!!.score,scoreStyle)
+
+        val buttonStartGame = TextButton("Play again", skin)
         buttonStartGame.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.startGame()
             }
         })
-        buttonStartGame.label.setFontScale(2f)
         buttonStartGame.pad(15f)
 
-        val buttonMainMenu = TextButton("Main menu", skin, "default")
+        val buttonMainMenu = TextButton("Main menu",skin)
         buttonMainMenu.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.goMainMenu()
             }
         })
-        buttonMainMenu.label.setFontScale(2f)
         buttonMainMenu.pad(15f)
 
         val buttonExit = TextButton("Exit", skin)
@@ -89,7 +93,6 @@ class GameOverScreen(val game: SewerCarGame, val skin: Skin): Screen, InputProce
                 stage.addAction(Actions.sequence(Actions.fadeOut(0.5f), Actions.run(Runnable { Gdx.app.exit() })))
             }
         })
-        buttonExit.label.setFontScale(2f)
         buttonExit.pad(15f)
 
         val buttonWidth = Gdx.graphics.width*WIDTH_BUTTON_PERCENT

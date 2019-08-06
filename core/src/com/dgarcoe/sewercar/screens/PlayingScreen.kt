@@ -20,7 +20,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 
@@ -28,7 +30,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 /**
  * Created by Daniel on 23/06/2019.
  */
-class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProcessor {
+class PlayingScreen (val game: SewerCarGame, val skin: Skin,
+                     val fontScore:BitmapFont): Screen, InputProcessor {
 
     private val HEALTHBAR_HEIGHT_PERCENT = 0.02f
     private val HEALTHBAR_WIDTH_PERCENT = 0.25f
@@ -106,15 +109,11 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
 
     private fun setStage() {
 
-        Gdx.app.log("LOL","HEIGHT: "+Gdx.graphics.height)
-        score = Label("Score: " + String.format("%06d", game.world.player!!.score), skin)
-        score!!.setColor(126f, 1f, 1f, 1f)
+        val scoreStyle = Label.LabelStyle()
+        scoreStyle.font = fontScore
 
-        if (Gdx.graphics.height > 1500) {
-            score!!.setFontScale(4f)
-        } else {
-            score!!.setFontScale(2f)
-        }
+        score = Label("Score: " + String.format("%06d", game.world.player!!.score), scoreStyle)
+        score!!.setColor(126f, 1f, 1f, 1f)
 
         table.top()
         table.add(score).expandX().center().row()
