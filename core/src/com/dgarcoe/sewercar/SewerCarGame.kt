@@ -48,8 +48,6 @@ class SewerCarGame : Game() {
 
     override fun create() {
 
-        val assetManager = AssetManager()
-
         val generatorTitle = FreeTypeFontGenerator(Gdx.files.internal("fonts/Facon.ttf"))
         val generatorButtons = FreeTypeFontGenerator(Gdx.files.internal("fonts/hyperspd.ttf"))
         val parameterTitle = FreeTypeFontGenerator.FreeTypeFontParameter()
