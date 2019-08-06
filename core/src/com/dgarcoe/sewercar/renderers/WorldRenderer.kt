@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.sewercar.entities.Sewer
@@ -42,8 +43,8 @@ class WorldRenderer(var world: World) {
         val aspectRatio = Gdx.graphics.height/Gdx.graphics.width
 
         cam = OrthographicCamera()
-        viewPort = FitViewport(WIDTH_CAMERA.toFloat()*aspectRatio, HEIGHT_CAMERA.toFloat(),cam)
-        (viewPort as FitViewport).apply()
+        viewPort = ExtendViewport(WIDTH_CAMERA.toFloat()*aspectRatio, HEIGHT_CAMERA.toFloat(),cam)
+        (viewPort as ExtendViewport).apply()
         cam!!.setToOrtho(false, WIDTH_CAMERA.toFloat(), HEIGHT_CAMERA.toFloat())
         cam!!.position.set((WIDTH_CAMERA/2).toFloat(), (HEIGHT_CAMERA/2).toFloat(),0f)
 
@@ -102,7 +103,7 @@ class WorldRenderer(var world: World) {
         }
         debugRenderer.end()*/
 
-        originY-=DEFAULT_CAMERA_SPEED*delta
+        originY = (originY-DEFAULT_CAMERA_SPEED*delta) % HEIGHT_CAMERA
 
 }
 
