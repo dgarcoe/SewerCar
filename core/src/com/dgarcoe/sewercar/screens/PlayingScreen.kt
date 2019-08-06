@@ -106,9 +106,15 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin): Screen, InputProce
 
     private fun setStage() {
 
+        Gdx.app.log("LOL","HEIGHT: "+Gdx.graphics.height)
         score = Label("Score: " + String.format("%06d", game.world.player!!.score), skin)
         score!!.setColor(126f, 1f, 1f, 1f)
-        score!!.setFontScale(2f)
+
+        if (Gdx.graphics.height > 1500) {
+            score!!.setFontScale(4f)
+        } else {
+            score!!.setFontScale(2f)
+        }
 
         table.top()
         table.add(score).expandX().center().row()
