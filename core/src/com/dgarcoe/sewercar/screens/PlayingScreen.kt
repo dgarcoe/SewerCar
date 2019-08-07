@@ -1,5 +1,8 @@
 package com.dgarcoe.sewercar.screens
 
+import aurelienribon.tweenengine.Timeline
+import aurelienribon.tweenengine.Tween
+import aurelienribon.tweenengine.TweenManager
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
@@ -23,15 +26,18 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
+import com.dgarcoe.sewercar.ui.tween.ActorAccessor
 
 
 /**
  * Created by Daniel on 23/06/2019.
  */
 class PlayingScreen (val game: SewerCarGame, val skin: Skin,
-                     val fontScore:BitmapFont): Screen, InputProcessor {
+                     val fontScore:BitmapFont, val fontTitle: BitmapFont): Screen, InputProcessor {
 
     private val HEALTHBAR_HEIGHT_PERCENT = 0.02f
     private val HEALTHBAR_WIDTH_PERCENT = 0.25f
@@ -43,6 +49,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
     lateinit var worldRenderer : WorldRenderer
 
     var elapsed: Float = 0.0f
+    var running: Boolean = false
 
     lateinit var stage: Stage
     lateinit var table: Table
@@ -51,6 +58,9 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
 
     var progressBarStyle: ProgressBar.ProgressBarStyle? = null
     var healthBar: ProgressBar? = null
+
+    private var tweenManager: TweenManager? = null
+
 
     override fun hide() {
         dispose()
@@ -107,18 +117,48 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
 
     }
 
+    private fun countdownAnimations(countdown: Label) {
+
+        var count = 3
+        worldRenderer.initMoving()
+
+        Timer.schedule(object : Task() {
+            override fun run() {
+                if (count==0) {
+                    countdown.setText("GO!")
+                    worldRenderer.startMoving()
+                } else if (count<0){
+                    countdown.setText("")
+                    running = true
+                } else {
+                    countdown.setText(count)
+                }
+                count--
+            }
+        }, 1f, 1f, 4)
+
+
+    }
+
     private fun setStage() {
 
         val scoreStyle = Label.LabelStyle()
         scoreStyle.font = fontScore
 
+        val countdownStyle = Label.LabelStyle()
+        countdownStyle.font = fontTitle
+
         score = Label("Score: " + String.format("%06d", game.world.player!!.score), scoreStyle)
         score!!.setColor(126f, 1f, 1f, 1f)
 
+        val countdown = Label("", countdownStyle)
+
         table.top()
         table.add(score).expandX().center().row()
+        table.add(countdown).spaceTop((Gdx.graphics.height/4).toFloat()).expandX().center()
         stage.addActor(table)
         stage.addActor(healthBar)
+        countdownAnimations(countdown)
     }
 
     private fun updateHUD() {
@@ -144,9 +184,10 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
 
         if (game.world.player!!.health<=0) {
             game.endGame()
+            running = false
         }
 
-        if (elapsed > SEWER_GENERATION_TIME) {
+        if (elapsed > SEWER_GENERATION_TIME && running) {
             game.world.generateSewer()
             elapsed = 0f
         }
@@ -217,7 +258,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
             movement.x = 100f
         }
 
-        if (touchArea.contains(movement.x,movement.y)) {
+        if (touchArea.contains(movement.x,movement.y) && running) {
             game.world.player!!.update(movement, movement)
         }
 

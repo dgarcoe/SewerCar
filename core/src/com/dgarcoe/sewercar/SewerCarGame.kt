@@ -89,7 +89,7 @@ class SewerCarGame : Game() {
         skin.load(Gdx.files.internal("skin/metal/skin/metal-ui.json"))
 
         mainMenuScreen = MainMenuScreen(this,skin,fontTitle)
-        playingScreen = PlayingScreen(this,skin,fontScoreInGame)
+        playingScreen = PlayingScreen(this,skin,fontScoreInGame,fontTitle)
         gameOverScreen = GameOverScreen(this,skin,fontTitle,fontScoreOver)
 
 

@@ -20,7 +20,7 @@ import com.badlogic.gdx.graphics.Pixmap
  */
 class WorldRenderer(var world: World) {
 
-    private val DEFAULT_CAMERA_SPEED = 150f
+    val DEFAULT_CAMERA_SPEED = 150f
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
     var cam: OrthographicCamera? = null
@@ -34,6 +34,8 @@ class WorldRenderer(var world: World) {
 
     private var playerRenderer: PlayerRenderer? = null
     private var sewerRenderer: SewerRenderer? = null
+
+    var speed: Float = 0.0f
 
     /** for debug rendering  */
     var debugRenderer = ShapeRenderer()
@@ -79,8 +81,8 @@ class WorldRenderer(var world: World) {
 
             if (sewer.alive) {
                 sewerRenderer!!.drawEntity(sewer)
-                sewer.position.y -= DEFAULT_CAMERA_SPEED*delta
-                sewer.bounds.y -= DEFAULT_CAMERA_SPEED*delta
+                sewer.position.y -= speed*delta
+                sewer.bounds.y -= speed*delta
             } else {
                 if (sewer.collidable) {
                     world.player!!.score += sewer.points
@@ -102,7 +104,7 @@ class WorldRenderer(var world: World) {
         }
         debugRenderer.end()*/
 
-        originY = (originY-DEFAULT_CAMERA_SPEED*delta) % HEIGHT_CAMERA
+        originY = (originY-speed*delta) % HEIGHT_CAMERA
 
 }
 
@@ -117,6 +119,18 @@ class WorldRenderer(var world: World) {
         playerRenderer!!.dispose()
         sewerRenderer!!.dispose()
         texture!!.dispose()
+    }
+
+    fun startMoving() {
+        speed = DEFAULT_CAMERA_SPEED
+    }
+
+    fun initMoving() {
+        speed = 0f
+    }
+
+    fun stopMoving() {
+        speed = 0f
     }
 
 }
