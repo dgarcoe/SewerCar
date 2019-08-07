@@ -61,8 +61,8 @@ class World {
             }
 
             previousPosX = positionX
-            val offsetY = randomGenerator.nextInt(80-24)+24
-            val positionY = 250+offsetY*(i-1)
+            val offsetY = randomGenerator.nextInt(80-50)+50
+            val positionY = 300+offsetY*(i-1)
 
             sewers.add(Sewer(Vector2(positionX.toFloat(),positionY.toFloat()), Rectangle(positionX.toFloat(),positionY.toFloat(),22f,22f), Vector2(22f,22f)))
         }
