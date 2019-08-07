@@ -30,7 +30,7 @@ class World {
     var viewportHeight: Int = 0
 
     init {
-        player = PlayerCar(Vector2(85f, 10f), Rectangle(85f,10f,24f,48f),Vector2(0f,0f))
+        player = PlayerCar(Vector2(85f, 10f), Rectangle(85f,10f,24f,42f),Vector2(0f,0f))
     }
 
     fun cleanAll() {
