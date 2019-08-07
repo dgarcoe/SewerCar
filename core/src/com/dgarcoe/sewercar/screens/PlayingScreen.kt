@@ -30,6 +30,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
+import com.dgarcoe.sewercar.sounds.SFXManager
 import com.dgarcoe.sewercar.ui.tween.ActorAccessor
 
 
@@ -38,7 +39,8 @@ import com.dgarcoe.sewercar.ui.tween.ActorAccessor
  */
 class PlayingScreen (val game: SewerCarGame, val skin: Skin,
                      val fontScore:BitmapFont,
-                     val fontCountdown:BitmapFont): Screen, InputProcessor {
+                     val fontCountdown:BitmapFont,
+                     val sfxManager: SFXManager): Screen, InputProcessor {
 
     private val HEALTHBAR_HEIGHT_PERCENT = 0.02f
     private val HEALTHBAR_WIDTH_PERCENT = 0.25f
@@ -59,9 +61,6 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
 
     var progressBarStyle: ProgressBar.ProgressBarStyle? = null
     var healthBar: ProgressBar? = null
-
-    private var tweenManager: TweenManager? = null
-
 
     override fun hide() {
         dispose()
@@ -127,12 +126,14 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
             override fun run() {
                 if (count==0) {
                     countdown.setText("GO!")
+                    sfxManager!!.playEffect(SFXManager.SFX.BLIP_GO)
                     worldRenderer.startMoving()
                 } else if (count<0){
                     countdown.setText("")
                     running = true
                 } else {
                     countdown.setText(count.toString())
+                    sfxManager!!.playEffect(SFXManager.SFX.BLIP_COUNTDOWN)
                 }
                 count--
             }
@@ -197,7 +198,14 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
             if (sewer.collided(game.world.player!!)) {
                 sewer.collidable = false
                 game.world.player!!.health -= sewer.damage
-                Gdx.input.vibrate(250)
+                if (game.world.player!!.health>0) {
+                    Gdx.input.vibrate(250)
+                    sfxManager!!.playEffect(SFXManager.SFX.SEWER_HIT)
+                } else {
+                    Gdx.input.vibrate(400)
+                    sfxManager!!.playEffect(SFXManager.SFX.BROKEN_CAR)
+                }
+
             }
         }
 

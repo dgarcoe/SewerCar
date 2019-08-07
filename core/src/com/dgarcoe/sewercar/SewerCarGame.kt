@@ -19,9 +19,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.ObjectMap
-
-
-
+import com.dgarcoe.sewercar.sounds.SFXManager
 
 
 class SewerCarGame : Game() {
@@ -45,6 +43,8 @@ class SewerCarGame : Game() {
     lateinit var skin: Skin
 
     lateinit var world: World
+
+    private var sfxManager: SFXManager? = null
 
     override fun create() {
 
@@ -93,9 +93,12 @@ class SewerCarGame : Game() {
         skin.addRegions(TextureAtlas(Gdx.files.internal("skin/metal/skin/metal-ui.atlas")))
         skin.load(Gdx.files.internal("skin/metal/skin/metal-ui.json"))
 
-        mainMenuScreen = MainMenuScreen(this,skin,fontTitle)
-        playingScreen = PlayingScreen(this,skin,fontScoreInGame,fontCountdown)
-        gameOverScreen = GameOverScreen(this,skin,fontTitle,fontScoreOver)
+        sfxManager = SFXManager()
+        sfxManager!!.loadEffects()
+
+        mainMenuScreen = MainMenuScreen(this,skin,fontTitle,sfxManager!!)
+        playingScreen = PlayingScreen(this,skin,fontScoreInGame,fontCountdown,sfxManager!!)
+        gameOverScreen = GameOverScreen(this,skin,fontTitle,fontScoreOver,sfxManager!!)
 
 
         world = World()

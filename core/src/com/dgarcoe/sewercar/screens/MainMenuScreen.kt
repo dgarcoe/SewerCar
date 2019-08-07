@@ -27,13 +27,14 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.sewercar.ui.tween.ActorAccessor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.run
+import com.dgarcoe.sewercar.sounds.SFXManager
 
 
 /**
  * Created by Daniel on 23/06/2019.
  */
 class MainMenuScreen (val game: SewerCarGame, val skin: Skin,
-                      val fontTitle: BitmapFont): Screen, InputProcessor {
+                      val fontTitle: BitmapFont, val sfxManager: SFXManager): Screen, InputProcessor {
 
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
@@ -104,6 +105,7 @@ class MainMenuScreen (val game: SewerCarGame, val skin: Skin,
         val buttonExit = TextButton("Exit", skin)
         buttonExit.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                sfxManager.dispose()
                 stage.addAction(sequence(fadeOut(0.5f), run(Runnable { Gdx.app.exit() })))
             }
         })

@@ -19,13 +19,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.dgarcoe.sewercar.SewerCarGame
+import com.dgarcoe.sewercar.sounds.SFXManager
 import javax.swing.text.LabelView
 
 /**
  * Created by Daniel on 02/08/2019.
  */
 class GameOverScreen(val game: SewerCarGame, val skin: Skin, val fontTitle:BitmapFont,
-                     val fontScore:BitmapFont): Screen, InputProcessor {
+                     val fontScore:BitmapFont, val sfxManager: SFXManager): Screen, InputProcessor {
 
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
@@ -90,6 +91,7 @@ class GameOverScreen(val game: SewerCarGame, val skin: Skin, val fontTitle:Bitma
         val buttonExit = TextButton("Exit", skin)
         buttonExit.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                sfxManager.dispose()
                 stage.addAction(Actions.sequence(Actions.fadeOut(0.5f), Actions.run(Runnable { Gdx.app.exit() })))
             }
         })
