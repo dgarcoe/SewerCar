@@ -51,6 +51,7 @@ class SewerCarGame : Game() {
         val generatorTitle = FreeTypeFontGenerator(Gdx.files.internal("fonts/Facon.ttf"))
         val generatorButtons = FreeTypeFontGenerator(Gdx.files.internal("fonts/hyperspd.ttf"))
         val parameterTitle = FreeTypeFontGenerator.FreeTypeFontParameter()
+        val parameterCountdown = FreeTypeFontGenerator.FreeTypeFontParameter()
         val parameterButtons = FreeTypeFontGenerator.FreeTypeFontParameter()
         val parameterScoreInGame = FreeTypeFontGenerator.FreeTypeFontParameter()
         val parameterScoreOver = FreeTypeFontGenerator.FreeTypeFontParameter()
@@ -58,22 +59,26 @@ class SewerCarGame : Game() {
 
         if (Gdx.graphics.height>1500) {
             parameterTitle.size = 140
+            parameterCountdown.size = 115
             parameterButtons.size = 50
             parameterScoreInGame.size = 50
             parameterScoreOver.size = 40
         } else {
             parameterTitle.size = 90
+            parameterCountdown.size = 90
             parameterButtons.size = 25
             parameterScoreInGame.size = 25
             parameterScoreOver.size = 20
         }
 
         parameterTitle.color = Color.RED
+        parameterCountdown.color = Color.RED
         parameterButtons.color = Color.BLACK
         parameterScoreInGame.color = Color.RED
         parameterScoreOver.color = Color.WHITE
 
         val fontTitle = generatorTitle.generateFont(parameterTitle)
+        val fontCountdown = generatorTitle.generateFont(parameterCountdown)
         generatorTitle.dispose()
 
         val fontButtons = generatorButtons.generateFont(parameterButtons)
@@ -89,7 +94,7 @@ class SewerCarGame : Game() {
         skin.load(Gdx.files.internal("skin/metal/skin/metal-ui.json"))
 
         mainMenuScreen = MainMenuScreen(this,skin,fontTitle)
-        playingScreen = PlayingScreen(this,skin,fontScoreInGame,fontTitle)
+        playingScreen = PlayingScreen(this,skin,fontScoreInGame,fontCountdown)
         gameOverScreen = GameOverScreen(this,skin,fontTitle,fontScoreOver)
 
 

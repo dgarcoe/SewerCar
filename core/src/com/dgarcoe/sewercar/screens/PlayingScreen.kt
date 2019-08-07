@@ -37,7 +37,8 @@ import com.dgarcoe.sewercar.ui.tween.ActorAccessor
  * Created by Daniel on 23/06/2019.
  */
 class PlayingScreen (val game: SewerCarGame, val skin: Skin,
-                     val fontScore:BitmapFont, val fontTitle: BitmapFont): Screen, InputProcessor {
+                     val fontScore:BitmapFont,
+                     val fontCountdown:BitmapFont): Screen, InputProcessor {
 
     private val HEALTHBAR_HEIGHT_PERCENT = 0.02f
     private val HEALTHBAR_WIDTH_PERCENT = 0.25f
@@ -131,7 +132,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
                     countdown.setText("")
                     running = true
                 } else {
-                    countdown.setText(count)
+                    countdown.setText(count.toString())
                 }
                 count--
             }
@@ -146,7 +147,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
         scoreStyle.font = fontScore
 
         val countdownStyle = Label.LabelStyle()
-        countdownStyle.font = fontTitle
+        countdownStyle.font = fontCountdown
 
         score = Label("Score: " + String.format("%06d", game.world.player!!.score), scoreStyle)
         score!!.setColor(126f, 1f, 1f, 1f)
