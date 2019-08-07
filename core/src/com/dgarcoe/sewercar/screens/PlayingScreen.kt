@@ -130,6 +130,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
                     worldRenderer.startMoving()
                 } else if (count<0){
                     countdown.setText("")
+                    sfxManager!!.playEffect(SFXManager.SFX.CAR_ENGINE)
                     running = true
                 } else {
                     countdown.setText(count.toString())
@@ -203,6 +204,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
                     sfxManager!!.playEffect(SFXManager.SFX.SEWER_HIT)
                 } else {
                     Gdx.input.vibrate(400)
+                    sfxManager!!.stopEffect(SFXManager.SFX.CAR_ENGINE)
                     sfxManager!!.playEffect(SFXManager.SFX.BROKEN_CAR)
                 }
 
