@@ -1,5 +1,7 @@
 package com.dgarcoe.sewercar.entities
 
+import com.badlogic.gdx.math.Circle
+import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 
@@ -8,7 +10,7 @@ import com.badlogic.gdx.math.Vector2
 /**
  * Created by Daniel on 30/06/2019.
  */
-abstract class GameObject(var position: Vector2, var bounds: Rectangle, var boundsSize: Vector2) {
+abstract class GameObject(var position: Vector2) {
 
     enum class ObjectID {
         PLAYER, SEWER, CAR, MISC
@@ -36,10 +38,6 @@ abstract class GameObject(var position: Vector2, var bounds: Rectangle, var boun
                     viewportWidth: Int, viewportHeight: Int, playerPosition: Vector2) {
         stateTime += delta
        position.mulAdd(velocity,delta)
-    }
-
-    fun collided(obj: GameObject): Boolean {
-        return this.bounds.overlaps(obj.bounds) && collidable
     }
 
 }

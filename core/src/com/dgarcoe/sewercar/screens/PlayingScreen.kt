@@ -47,7 +47,10 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
     private val HEALTHBAR_PAINT_PERCENT_TOP = 0.07f
     private val HEALTHBAR_PAINT_PERCENT_LEFT = 0.01f
 
-    val SEWER_GENERATION_TIME = 1.5f
+    val DEFAULT_SPEED = 150f
+    val SEWER_GENERATION_TIME = 1.7f
+
+    var speed: Float = 0.0f
 
     lateinit var worldRenderer : WorldRenderer
 
@@ -120,14 +123,14 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
     private fun countdownAnimations(countdown: Label) {
 
         var count = 3
-        worldRenderer.initMoving()
+        speed = 0f
 
         Timer.schedule(object : Task() {
             override fun run() {
                 if (count==0) {
                     countdown.setText("GO!")
                     sfxManager!!.playEffect(SFXManager.SFX.BLIP_GO)
-                    worldRenderer.startMoving()
+                    speed = DEFAULT_SPEED
                 } else if (count<0){
                     countdown.setText("")
                     sfxManager!!.playEffect(SFXManager.SFX.CAR_ENGINE)
@@ -196,6 +199,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
         }
 
         for (sewer:Sewer in game.world.sewers) {
+            sewer.update(sewer.position.y-speed*delta,sewer.bounds.y-speed*delta)
             if (sewer.collided(game.world.player!!)) {
                 sewer.collidable = false
                 game.world.player!!.health -= sewer.damage
@@ -211,7 +215,7 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
             }
         }
 
-        worldRenderer.render(delta)
+        worldRenderer.render(delta,speed)
 
         stage.act(delta)
         updateHUD()

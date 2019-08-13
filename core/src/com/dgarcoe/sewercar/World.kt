@@ -4,6 +4,7 @@ import com.dgarcoe.sewercar.entities.Sewer
 import com.badlogic.gdx.math.Vector2
 import com.dgarcoe.sewercar.entities.PlayerCar
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Rectangle
 import java.util.*
 
@@ -61,10 +62,11 @@ class World {
             }
 
             previousPosX = positionX
-            val offsetY = randomGenerator.nextInt(80-50)+50
+            val offsetY = randomGenerator.nextInt(120-80)+80
             val positionY = 300+offsetY*(i-1)
 
-            sewers.add(Sewer(Vector2(positionX.toFloat(),positionY.toFloat()), Rectangle(positionX.toFloat(),positionY.toFloat(),22f,22f), Vector2(22f,22f)))
+            sewers.add(Sewer(Vector2(positionX.toFloat(),positionY.toFloat()),
+                    Circle(positionX.toFloat()+11f,positionY.toFloat()+11f,11f)))
         }
     }
 

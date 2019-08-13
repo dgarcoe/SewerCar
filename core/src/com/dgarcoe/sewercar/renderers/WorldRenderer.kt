@@ -20,7 +20,6 @@ import com.badlogic.gdx.graphics.Pixmap
  */
 class WorldRenderer(var world: World) {
 
-    val DEFAULT_CAMERA_SPEED = 150f
     private val WIDTH_CAMERA = 128
     private val HEIGHT_CAMERA = 256
     var cam: OrthographicCamera? = null
@@ -62,7 +61,7 @@ class WorldRenderer(var world: World) {
         sewerRenderer!!.loadEntityTextures()
     }
 
-    fun render(delta: Float) {
+    fun render(delta: Float, speed: Float) {
 
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -77,12 +76,9 @@ class WorldRenderer(var world: World) {
         batch!!.draw(texture,0f,0f,0, originY.toInt(), width, height)
         val sewerIterator = world.sewers.iterator()
         for (sewer in sewerIterator) {
-            sewer.update()
 
             if (sewer.alive) {
                 sewerRenderer!!.drawEntity(sewer)
-                sewer.position.y -= speed*delta
-                sewer.bounds.y -= speed*delta
             } else {
                 if (sewer.collidable) {
                     world.player!!.score += sewer.points
@@ -100,7 +96,7 @@ class WorldRenderer(var world: World) {
         debugRenderer.setColor(Color(1f, 1f, 0f, 1f));
         debugRenderer.rect(world.player!!.bounds.x, world.player!!.bounds.y, world.player!!.bounds.width, world.player!!.bounds.height)
         for (sewer: Sewer in world.sewers) {
-            debugRenderer.rect(sewer.bounds.x,sewer.bounds.y,sewer.bounds.width, sewer.bounds.height)
+            debugRenderer.circle(sewer.bounds.x,sewer.bounds.y,sewer.bounds.radius)
         }
         debugRenderer.end()*/
 
@@ -120,17 +116,4 @@ class WorldRenderer(var world: World) {
         sewerRenderer!!.dispose()
         texture!!.dispose()
     }
-
-    fun startMoving() {
-        speed = DEFAULT_CAMERA_SPEED
-    }
-
-    fun initMoving() {
-        speed = 0f
-    }
-
-    fun stopMoving() {
-        speed = 0f
-    }
-
 }
