@@ -205,7 +205,6 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
                     sfxManager!!.playEffect(SFXManager.SFX.SEWER_HIT)
                 } else {
                     Gdx.input.vibrate(400)
-                    sfxManager!!.stopEffect(SFXManager.SFX.CAR_ENGINE)
                     sfxManager!!.playEffect(SFXManager.SFX.BROKEN_CAR)
                 }
 
