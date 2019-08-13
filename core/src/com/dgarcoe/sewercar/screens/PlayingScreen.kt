@@ -1,13 +1,9 @@
 package com.dgarcoe.sewercar.screens
 
-import aurelienribon.tweenengine.Timeline
-import aurelienribon.tweenengine.Tween
-import aurelienribon.tweenengine.TweenManager
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.math.Rectangle
 import com.dgarcoe.sewercar.SewerCarGame
@@ -16,22 +12,16 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Timer
 import com.badlogic.gdx.utils.Timer.Task
 import com.dgarcoe.sewercar.entities.Sewer
-import com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.dgarcoe.sewercar.sounds.SFXManager
-import com.dgarcoe.sewercar.ui.tween.ActorAccessor
 
 
 /**
@@ -49,12 +39,15 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
 
     val DEFAULT_SPEED = 150f
     val SEWER_GENERATION_TIME = 1.7f
+    val INCREASE_DIFFICULTY_SECONDS = 15f
 
+    var generationTime = SEWER_GENERATION_TIME
     var speed: Float = 0.0f
 
     lateinit var worldRenderer : WorldRenderer
 
-    var elapsed: Float = 0.0f
+    var elapsedToNewSewer: Float = 0.0f
+    var totalGameTime: Float = 0.0f
     var running: Boolean = false
 
     lateinit var stage: Stage
@@ -183,19 +176,23 @@ class PlayingScreen (val game: SewerCarGame, val skin: Skin,
     }
 
     override fun render(delta: Float) {
-        elapsed += delta
+        elapsedToNewSewer += delta
+        totalGameTime += delta
 
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        if (totalGameTime > INCREASE_DIFFICULTY_SECONDS && speed < 500) {
+            speed += 20
+            generationTime -= 0.05f
+            totalGameTime = 0f
+        }
 
         if (game.world.player!!.health<=0) {
             game.endGame()
             running = false
         }
 
-        if (elapsed > SEWER_GENERATION_TIME && running) {
+        if (elapsedToNewSewer > generationTime && running) {
             game.world.generateSewer()
-            elapsed = 0f
+            elapsedToNewSewer = 0f
         }
 
         for (sewer:Sewer in game.world.sewers) {
